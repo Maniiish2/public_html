@@ -7,6 +7,10 @@ class Manish extends CI_Controller {
 	{
 		echo "Manish";
 
+		print_r($this->input->post());
+
 	   return	print_r('hello ajax');
+
+	   
 	}
 }

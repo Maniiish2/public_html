@@ -13,6 +13,13 @@ function view_college(){
     return $this->db->select('*')->from('college')->get()->result();
 }
 
+function get_college_by_univ_id($id)
+{
+    return $this->db->select('*')->from('college')->where('id',$id)->get->result();
+
+
+}
+
 }
 
 

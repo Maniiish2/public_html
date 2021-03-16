@@ -5,9 +5,9 @@ class TimeSlot extends my_Controller{
 	function __construct(){
 		parent::__construct();
 
-	//	auth_check(); // check login auth
+		auth_check(); // check login auth
 
-	//	$this->rbac->check_module_access();
+		$this->rbac->check_module_access();
 
 		$this->load->model('admin/TimeSlot_model','timeslot');
 		$this->load->model('admin/Course_model','course');
@@ -30,11 +30,10 @@ class TimeSlot extends my_Controller{
 
 	function add_timeSlot(){
 	
-		if ($this->input->post('timeslot')) {
+		if ($this->input->post('time_slot')) {
 		
-			$this->form_validation->set_rules('timeslot', 'Time-Slot', 'trim|required');
+			$this->form_validation->set_rules('time_slot', 'Time-Slot', 'trim|required');
 	
-			echo "Hello Manish";
 	
 			if ($this->form_validation->run() == FALSE) {
 						$data = array(
@@ -44,9 +43,9 @@ class TimeSlot extends my_Controller{
 						$this->session->set_flashdata('errors', $data['errors']);
 						redirect(base_url('admin/TimeSlot/add_timeSlot'),'refresh');
 					}else{
-						$result=$this->timeslot->add_timeSlot($this->input->post());
-	
-						if ($result) {
+						//$result=$this->timeslot->add_timeSlot($this->input->post());
+
+					if ($this->timeslot->add_timeSlot($this->input->post())){
 							$this->session->set_flashdata('success', 'TimeSlot added successfully');	
 							redirect(base_url('admin/TimeSlot/add_timeSlot', 'refresh'));
 						}
@@ -69,16 +68,25 @@ class TimeSlot extends my_Controller{
 
 	function view_College(){
 
-		echo "Hello PHP";
+		if(empty($this->input->post('univ_id')))
+		{
+			redirect(base_url('admin/TimeSlot'));
+			exit;
 
-		print_r($_POST['univ_id']);
-
-		// print_r($this->input->post('univ_id'));
+		}
 		
 
-		
-		
-		// $data['college']      =    $this->College->view_college();
+		$states = $this->db->select('*')->where('univ_id',$this->input->post('univ_id'))->get('college')->result_array();
+		$options = array('' => 'Select Option') + array_column($states,'col_name','id');
+		$html = form_dropdown('col_id',$options,'','class="form-control select2" required');
+		$error =  array('msg' => $html);
+	    //echo json_encode($error);
+	    // echo json_encode($states);
+
+		//print_r($states);
+		foreach($states as $row){
+
+			echo '<option value="'.$row['id'].'">'.$row['col_name'].'</option>';		}
 
 	}
 

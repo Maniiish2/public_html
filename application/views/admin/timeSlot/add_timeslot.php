@@ -21,7 +21,14 @@
         <div class="row">
           <!-- left column -->
           <div class="col-md-6">
-          <?php $this->load->view('admin/includes/_messages.php') ?>
+          <?php $this->load->view('admin/includes/_messages.php');
+          
+          // if($this->session->flashdata('success')=='TimeSlot added successfully'){
+          //   echo $this->session->flashdata('success');
+          //   echo"<script>location.reload(true)</script>"; 
+          // }
+          
+          ?>
 
            </div>
           </div>
@@ -45,7 +52,7 @@
               <!-- /.card-header -->
               <!-- form start -->
               <form role="form" action='<?php echo base_url('admin/TimeSlot/add_timeSlot'); ?>' method='post'  > 
-              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
+              <input type="hidden" id='token' name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
 
             
 
@@ -53,8 +60,9 @@
                 
                 <div class="card-body">
 
-                    <label for="exampleInputEmail1">Select University</label>
+                    <label for="exampleInputEmail1">University</label>
                     <select class="form-control" name='univ_id' id = 'univ_id'> 
+                    <option>Select University </option>
                     <?php if(!empty($university)):
                       foreach ($university as $univ):
                       ?>
@@ -116,7 +124,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputPassword1">TimeSlot</label>
-                    <input type="text" class="form-control" name='timeslot' placeholder="Enter TimeSlot Name">
+                    <input type="text" class="form-control" name='time_slot' placeholder="Enter TimeSlot Name">
                   </div>
         
                 </div>
@@ -147,34 +155,55 @@
 <!-- Script -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<script type='text/javascript'>
-// baseURL variable
-var baseURL= "<?php echo base_url();?>";
+<script>
+
+
+var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
+
+var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
 
 $(document).ready(function(){
+       
+    
+      $("#univ_id").change(function(){
+            
+       var data =  { univ_id : this.value, }
 
-  // City change
-  $('#univ_id').change(function(){
-    var univ_id = $(this).val();
+          data[csfr_token_name] = csfr_token_value;
 
-    alert(univ_id);
+            //console.log(data);
 
-    alert("hello")
+            if ($("#univ_id").val().length == 0){
 
-    // AJAX request
-    $.ajax({
-      url:'Manish/index',
-      method: 'post',
-      data: {univ_id: univ_id},
-      dataType: 'json',
-      success: function(response){
+             alert('hello');
+             // $("#univ_id").val("1");
 
-        alert(response);
-      }
+
+            }
+
+               $.ajax({
+                  type: 'POST',
+                  url: '<?php echo site_url('admin/TimeSlot/view_College'); ?>',
+                  data: data,
+                  success: function(obj){
+
+                    console.log(obj);
+                    $('#col_id').html(obj);
+                        
+                    // $.each(obj.result, function(i, item) {
+                    //     alert(obj.result[i].col_name);
+                    //     console.log(obj.result[i].col_name);
+                    // })
+
+                        }
+               });
+              
+      });
+      
    });
- });
 
 
-
-});
 </script>
+
+
+
