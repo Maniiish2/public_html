@@ -1,0 +1,2 @@
+[04-Mar-2021 12:28:11 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/vivdista/public_html/application/controllers/Apply_now.php on line 64
+[04-Mar-2021 12:28:59 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting function (T_FUNCTION) in /home/vivdista/public_html/application/controllers/Apply_now.php on line 79
