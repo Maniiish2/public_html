@@ -21,16 +21,8 @@
         <div class="row">
           <!-- left column -->
           <div class="col-md-6">
-          <?php $this->load->view('admin/includes/_messages.php');
-          
-          // if($this->session->flashdata('success')=='TimeSlot added successfully'){
-          //   echo $this->session->flashdata('success');
-          //   echo"<script>location.reload(true)</script>"; 
-          // }
-          
-          ?>
-
-           </div>
+          <?php $this->load->view('admin/includes/_messages.php');?>
+      </div>
           </div>
         </div>
     </section>
